@@ -1,4 +1,8 @@
-const express = require('express');
+import express from 'express';
+import { PrismaClient } from '@prisma/client'
+
+const prisma = new PrismaClient()
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -9,6 +13,17 @@ const contracts = [
     { id: 1, client: 'Kunde A', budget: 5000, description: 'Beschreibung A', team: 'Entwicklungsteam 1', status: 'In Bearbeitung' },
     // Weitere Verträge...
 ];
+
+app.get('/test', async (req, res) => {
+    const user = await prisma.user.create({
+        data: {
+            name: 'Alice',
+            email: 'alice@prisma.io',
+        },
+    })
+    console.log(user)
+    res.json(contracts);
+});
 
 // Routen für Kundenverträge
 app.get('/contracts', (req, res) => {
@@ -24,19 +39,4 @@ app.post('/contracts', (req, res) => {
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
-
-const { Client } = require('pg');
-
-const dbClient = new Client({
-    user: 'postgres',
-    password: 'postgres',
-    host: 'db',
-    port: '5432',
-    database: 'postgres',
-});
-
-// Verbindung zur Datenbank herstellen
-dbClient.connect()
-   .then(() => console.log('Connected to the database'))
-   .catch(err => console.error('Error connecting to the database', err));
 

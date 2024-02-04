@@ -12,8 +12,10 @@ services:
     image: postgres:14.10-alpine3.18
     container_name: "sqlserver"
     hostname: "sqlserver"
+    ports:
+        - "5432:5432"
     environment:
-      POSTGRES_USER: postgres
+      POSTGRES_USER: postgres1
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: postgres
       
